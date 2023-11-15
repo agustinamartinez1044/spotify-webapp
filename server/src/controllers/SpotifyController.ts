@@ -1,28 +1,20 @@
 import SpotifyService from '../services/SpotifyService';
+import {SpotifyAlbum} from "../routes/types/types";
 
-async function getArtistAlbumsData(artistName: string) {
+async function getArtistAlbumsData(artistName: string): Promise<SpotifyAlbum[]> {
+
     const searchResult = await SpotifyService.searchArtist(artistName);
 
-    if (searchResult.artists.items.length === 0) {
-        throw new Error("Artist not found");
-    }
+    const albums = await SpotifyService.getArtistAlbums(searchResult.id, searchResult.name);
 
-    try {
-        const artist = searchResult.artists.items[0];
-        const albums = await SpotifyService.getArtistAlbums(artist.id, artist.name);
-        return albums;
-    } catch (error) {
-        throw new Error(error);
-    }
+    return albums;
 }
 
 async function searchAlbum(artistId: string) {
-    try{
-        const albums = await SpotifyService.getArtistAlbums(artistId, '');
-        return albums;
-    } catch (error) {
-        throw new Error(error);
-    }
+
+    const albums = await SpotifyService.getArtistAlbums(artistId, '');
+
+    return albums;
 }
 
 export default {
