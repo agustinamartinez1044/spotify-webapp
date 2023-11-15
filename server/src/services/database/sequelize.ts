@@ -6,4 +6,4 @@ const sequelize = new Sequelize({
     storage: path.join(__dirname, '../data/database.sqlite'),
 });
 
-module.exports = sequelize;
+export default sequelize;
