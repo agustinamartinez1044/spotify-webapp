@@ -1,4 +1,4 @@
-import {SporifyArtist, SporifyArtistResponse, SpotifyAlbum} from "../routes/types/types";
+import {SporifyArtist, SporifyArtistResponse, SpotifyAlbum, SpotifyAlbumResponse} from "../routes/types/types";
 import axios, {AxiosResponse} from 'axios';
 import {getAccessToken} from './authService';
 
@@ -36,7 +36,7 @@ async function getArtistAlbums(artistId: string, artistName: string): Promise<Sp
     const accessToken = await getAccessToken();
 
     const response: AxiosResponse<{
-        items: any[]
+        items: SpotifyAlbumResponse[]
     }> = await axios.get(`${api_url}/artists/${artistId}/albums?limit=12`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -47,7 +47,19 @@ async function getArtistAlbums(artistId: string, artistName: string): Promise<Sp
         throw new Error('Albums not found');
     }
 
-    return response.data.items;
+    const albums: SpotifyAlbum[] = response.data.items.map((item) => {
+        return {
+            id: item.id,
+            name: item.name,
+            release_date: item.release_date,
+            total_tracks: item.total_tracks,
+            image: item.images[0].url,
+            popularity: item.popularity,
+            artistName: artistName,
+        };
+    });
+
+    return albums;
 }
 
   export default {
