@@ -2,14 +2,14 @@
  * Express router paths go here.
  */
 
-
 export default {
   Base: '/api',
-  Users: {
-    Base: '/users',
-    Get: '/all',
-    Add: '/add',
-    Update: '/update',
-    Delete: '/delete/:id',
+  Artist: {
+    Base: '/artist',
+    Search: '/search',
   },
+  Album: {
+    Base: '/artist',
+    Get: '/:id'
+  }
 } as const;
