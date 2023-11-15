@@ -22,6 +22,19 @@ export interface SpotifyAlbum {
   artistName?: string;
 }
 
+export interface SpotifyAlbumResponse {
+  id: string;
+  name: string;
+  release_date: string;
+  total_tracks: number;
+  images: {
+    height: number;
+    url: string;
+    width: number;
+  }[];
+  popularity: number;
+}[];
+
 export interface SporifyArtistResponse {
   artists: {
     items: {
