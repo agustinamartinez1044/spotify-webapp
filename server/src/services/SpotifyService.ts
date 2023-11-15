@@ -22,15 +22,21 @@ async function searchArtist(artistName: string): Promise<SporifyArtist> {
       return response.data.artists.items[0];
 }
 
-async function getArtistAlbums(artistId: string, artistName: string): Promise<SpotifyAlbum> {
-  const accessToken = getAccessToken();
-    const response: AxiosResponse<SpotifyAlbum> = await axios.get(`${api_url}/artists/${artistId}/albums?limit=12`, {
+async function getArtistAlbums(artistId: string, artistName: string): Promise<SpotifyAlbum[]> {
+    const accessToken = await getAccessToken();
+    const response: AxiosResponse<{
+        items: any[]
+    }> = await axios.get(`${api_url}/artists/${artistId}/albums?limit=12`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
     });
 
-   return response.data;
+    if (response.data.items.length === 0) {
+        throw new Error('Albums not found');
+    }
+
+    return response.data.items;
 }
 
   export default {
