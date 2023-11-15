@@ -7,7 +7,7 @@ import SpotifyController from '../controllers/SpotifyController';
 
 // **** Functions **** //
 
-async function searchArtist(req: IReq, res: IRes, next: NextFunction) {
+async function getArtistAlbums(req: IReq, res: IRes, next: NextFunction) {
     try {
         const artistName = req.query.artistName as string;
 
@@ -23,7 +23,7 @@ async function searchArtist(req: IReq, res: IRes, next: NextFunction) {
     }
 }
 
-async function getArtistAlbums(req: IReq<{ user: IUser }>, res: IRes) {
+async function getAlbumsByArtistId(req: IReq<{ user: IUser }>, res: IRes) {
     try {
         const artistId = req.params.id;
 
@@ -42,6 +42,6 @@ async function getArtistAlbums(req: IReq<{ user: IUser }>, res: IRes) {
 // **** Export default **** //
 
 export default {
-  searchArtist,
-  getArtistAlbums
+    getArtistAlbums,
+    getAlbumsByArtistId
 } as const;
