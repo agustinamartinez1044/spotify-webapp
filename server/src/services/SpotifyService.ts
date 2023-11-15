@@ -57,7 +57,11 @@ async function getArtistAlbums(artistId: string, artistName: string): Promise<Sp
             artistName: artistName
         }));
 
-        return await Promise.all(albumPopularityPromises);
+        const albums = await Promise.all(albumPopularityPromises);
+
+        albums.sort((a, b) => b.popularity - a.popularity);
+
+        return albums;
     } catch (error) {
         throw error;
     }
