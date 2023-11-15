@@ -18,12 +18,12 @@ const spotifyRouter = Router();
 
 spotifyRouter.get(
   Paths.Artist.Search,
-    SpotifyRoutes.searchArtist,
+    SpotifyRoutes.searchArtist
 );
 
 spotifyRouter.get(
     Paths.Album.Get,
-    SpotifyRoutes.getAlbumData
+    SpotifyRoutes.getArtistAlbums
 );
 
 
