@@ -23,7 +23,12 @@ export interface SpotifyAlbum {
 }
 
 export interface SporifyArtist {
-
+  artists: {
+    items: {
+      id: string;
+      name: string;
+    }[];
+  }
 }
 
 export interface IRes extends e.Response {}
