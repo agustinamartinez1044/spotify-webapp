@@ -7,6 +7,7 @@ const api_url = process.env.SPOTIFY_API_URL;
 
 async function searchArtist(artistName: string): Promise<SporifyArtist> {
     const accessToken = await getAccessToken();
+
     const response: AxiosResponse<SporifyArtistResponse> = await axios.get(`${api_url}/search`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -16,14 +17,24 @@ async function searchArtist(artistName: string): Promise<SporifyArtist> {
             type: 'artist',
         },
     });
+
     if (response.data.artists.items.length === 0) {
         throw new Error(USER_NOT_FOUND_ERR);
     }
-      return response.data.artists.items[0];
+
+    const artistData = response.data.artists.items[0];
+    const artist: SporifyArtist = {
+        id: artistData.id,
+        name: artistData.name
+    };
+
+    return artist;
 }
 
 async function getArtistAlbums(artistId: string, artistName: string): Promise<SpotifyAlbum[]> {
+
     const accessToken = await getAccessToken();
+
     const response: AxiosResponse<{
         items: any[]
     }> = await axios.get(`${api_url}/artists/${artistId}/albums?limit=12`, {
