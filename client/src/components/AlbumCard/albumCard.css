@@ -1,0 +1,47 @@
+.card-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.album-card {
+    background: #2c2c2c;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+    will-change: transform;
+
+}
+
+.album-card:hover {
+    transform: scale(1.05);
+}
+
+.card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.card-image img {
+    height: auto;
+    display: block;
+}
+
+.card-title, .card-text {
+    padding: 8px 16px;
+    margin: 12px;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.card-text {
+    font-size: 0.8em;
+    color: #CCCCCC;
+}
