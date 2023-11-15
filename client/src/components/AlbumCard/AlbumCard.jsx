@@ -13,7 +13,7 @@ const AlbumCard = ({album}) => {
                 </div>
                 <div className="card-content">
                     <h3 className="card-title">{name}</h3>
-                    <div class="card-text">
+                    <div className="card-text">
                         <div key={id}>{artistName}</div>
                         <p>{release_date}</p>
                     </div>
