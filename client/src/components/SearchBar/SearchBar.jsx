@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './searchBar.css';
 
-const SearchBar = () => {
+const SearchBar = ({setAlbums}) => {
     const [query, setQuery] = useState('');
 
-    const handleSearch = (event) => {
+    const handleSearch = async (event) => {
         event.preventDefault();
-        console.log('Buscando:', query);
+        try {
+            if (query === '') return;
+            const response = await axios.get(`http://localhost:5051/api/artist/search`, {params: {artistName: query}});
+            setAlbums(response.data);
+        } catch (error) {
+            console.error('Error during the search:', error);
+        }
     };
 
     return (
