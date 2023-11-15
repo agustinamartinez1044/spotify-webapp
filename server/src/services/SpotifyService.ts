@@ -47,18 +47,19 @@ async function getArtistAlbums(artistId: string, artistName: string): Promise<Sp
         throw new Error('Albums not found');
     }
 
-    const albums: SpotifyAlbum[] = response.data.items.map((item) => {
-        return {
+    const albumPopularityPromises = response.data.items.map((item) =>
+        getAlbumPopularity(item.id).then(popularity => ({
             id: item.id,
             name: item.name,
             release_date: item.release_date,
             total_tracks: item.total_tracks,
             image: item.images[0].url,
-            popularity: item.popularity,
-            artistName: artistName,
-        };
-    });
+            popularity: popularity,
+            artistName: artistName
+        }))
+    );
 
+    const albums = await Promise.all(albumPopularityPromises);
     return albums;
 }
 
@@ -71,7 +72,7 @@ async function getAlbumPopularity(albumId: string): Promise<number> {
         },
     });
 
-    return response.data.popularity;
+    return response.data.popularity || 0;
 }
 
   export default {
