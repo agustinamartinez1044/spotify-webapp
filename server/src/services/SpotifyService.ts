@@ -6,73 +6,77 @@ export const USER_NOT_FOUND_ERR = 'User not found';
 const api_url = process.env.SPOTIFY_API_URL;
 
 async function searchArtist(artistName: string): Promise<SporifyArtist> {
-    const accessToken = await getAccessToken();
+    try {
+        const accessToken = await getAccessToken();
+        const response: AxiosResponse<SporifyArtistResponse> = await axios.get(`${api_url}/search`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            params: {
+                q: artistName,
+                type: 'artist',
+            },
+        });
 
-    const response: AxiosResponse<SporifyArtistResponse> = await axios.get(`${api_url}/search`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-            q: artistName,
-            type: 'artist',
-        },
-    });
+        if (response.data.artists.items.length === 0) {
+            throw new Error(USER_NOT_FOUND_ERR);
+        }
 
-    if (response.data.artists.items.length === 0) {
-        throw new Error(USER_NOT_FOUND_ERR);
+        const artistData = response.data.artists.items[0];
+        return {
+            id: artistData.id,
+            name: artistData.name
+        };
+    } catch (error) {
+        throw error;
     }
-
-    const artistData = response.data.artists.items[0];
-    const artist: SporifyArtist = {
-        id: artistData.id,
-        name: artistData.name
-    };
-
-    return artist;
 }
 
 async function getArtistAlbums(artistId: string, artistName: string): Promise<SpotifyAlbum[]> {
+    try {
+        const accessToken = await getAccessToken();
+        const response: AxiosResponse<{
+            items: SpotifyAlbumResponse[]
+        }> = await axios.get(`${api_url}/artists/${artistId}/albums?limit=12`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
 
-    const accessToken = await getAccessToken();
+        if (response.data.items.length === 0) {
+            throw new Error('Albums not found');
+        }
 
-    const response: AxiosResponse<{
-        items: SpotifyAlbumResponse[]
-    }> = await axios.get(`${api_url}/artists/${artistId}/albums?limit=12`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    });
-
-    if (response.data.items.length === 0) {
-        throw new Error('Albums not found');
-    }
-
-    const albumPopularityPromises = response.data.items.map((item) =>
-        getAlbumPopularity(item.id).then(popularity => ({
+        const albumPopularityPromises = response.data.items.map(async (item) => ({
             id: item.id,
             name: item.name,
             release_date: item.release_date,
             total_tracks: item.total_tracks,
             image: item.images[0].url,
-            popularity: popularity,
+            popularity: await getAlbumPopularity(item.id),
             artistName: artistName
-        }))
-    );
+        }));
 
-    const albums = await Promise.all(albumPopularityPromises);
-    return albums;
+        return await Promise.all(albumPopularityPromises);
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function getAlbumPopularity(albumId: string): Promise<number> {
-    const accessToken = await getAccessToken();
+    try {
+        const accessToken = await getAccessToken();
 
-    const response: AxiosResponse = await axios.get(`${api_url}/albums/${albumId}`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    });
+        const response: AxiosResponse = await axios.get(`${api_url}/albums/${albumId}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
 
-    return response.data.popularity || 0;
+        return response.data.popularity || 0;
+    } catch (error) {
+        throw error;
+    }
 }
 
   export default {
