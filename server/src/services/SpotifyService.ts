@@ -1,4 +1,4 @@
-import {SporifyArtist, SpotifyAlbum} from "@src/routes/types/types";
+import {SporifyArtist, SpotifyAlbum} from "../routes/types/types";
 import axios, {AxiosResponse} from 'axios';
 import {getAccessToken} from './authService';
 

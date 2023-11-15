@@ -1,7 +1,6 @@
 import {NextFunction} from 'express';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '../constants/HttpStatusCodes';
 
-import {IUser} from '@src/models/User';
 import {IReq, IRes} from '../routes/types/types';
 import SpotifyController from '../controllers/SpotifyController';
 
@@ -23,7 +22,7 @@ async function getArtistAlbums(req: IReq, res: IRes, next: NextFunction) {
     }
 }
 
-async function getAlbumsByArtistId(req: IReq<{ user: IUser }>, res: IRes) {
+async function getAlbumsByArtistId(req: IReq, res: IRes) {
     try {
         const artistId = req.params.id;
 
