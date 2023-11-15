@@ -12,4 +12,18 @@ export interface IReqQuery<T extends Query, U = void> extends e.Request {
   body: U;
 }
 
+export interface SpotifyAlbum {
+  id: string;
+    name: string;
+    release_date: string;
+    total_tracks: number;
+    image: string;
+    popularity: number;
+    artistName?: string;
+}
+
+export interface SporifyArtist {
+
+}
+
 export interface IRes extends e.Response {}
