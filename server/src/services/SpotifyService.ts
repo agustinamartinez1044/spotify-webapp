@@ -62,6 +62,18 @@ async function getArtistAlbums(artistId: string, artistName: string): Promise<Sp
     return albums;
 }
 
+async function getAlbumPopularity(albumId: string): Promise<number> {
+    const accessToken = await getAccessToken();
+
+    const response: AxiosResponse = await axios.get(`${api_url}/albums/${albumId}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+
+    return response.data.popularity;
+}
+
   export default {
     searchArtist,
     getArtistAlbums
