@@ -2,8 +2,7 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 import SpotifyService from '@src/services/SpotifyService';
 import {IUser} from '@src/models/User';
-import {IReq, IRes} from './types/express/misc';
-
+import {IReq, IRes} from '../routes/types/types';
 
 // **** Functions **** //
 
