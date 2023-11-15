@@ -39,3 +39,12 @@ async function requestNewAccessToken(): Promise<string> {
         throw new Error('Error al obtener el token de acceso de Spotify');
     }
 }
+
+export async function getAccessToken(): Promise<string> {
+    if (!accessToken || new Date().getTime() >= tokenExpirationTime) {
+        return await requestNewAccessToken();
+    }
+    else {
+        return accessToken;
+    }
+}
