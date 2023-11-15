@@ -32,7 +32,6 @@ export interface SpotifyAlbumResponse {
     url: string;
     width: number;
   }[];
-  popularity: number;
 }[];
 
 export interface SporifyArtistResponse {
