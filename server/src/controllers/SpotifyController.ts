@@ -7,13 +7,22 @@ async function getArtistAlbumsData(artistName: string) {
         throw new Error("Artist not found");
     }
 
-    const artist = searchResult.artists.items[0];
-
-    return artist;
+    try {
+        const artist = searchResult.artists.items[0];
+        const albums = await SpotifyService.getArtistAlbums(artist.id, artist.name);
+        return albums;
+    } catch (error) {
+        throw new Error(error);
+    }
 }
 
 async function searchAlbum(artistId: string) {
-    return await SpotifyService.getArtistAlbums(artistId, '');
+    try{
+        const albums = await SpotifyService.getArtistAlbums(artistId, '');
+        return albums;
+    } catch (error) {
+        throw new Error(error);
+    }
 }
 
 export default {
